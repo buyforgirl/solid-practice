@@ -23,8 +23,7 @@ public class DynamicEnvironment extends Environment
     this.keyMap = propKeyMap;
   }
 
-  @Override
-  public Collection<Object> values()
+  public Collection<String> values()
   {
     // TODO remove masked values
     // TODO join local instance values
@@ -40,11 +39,11 @@ public class DynamicEnvironment extends Environment
    * @return The value for the given key after mapping (e.g. "home" might be mapped to "secureHome")
    */
 
-  @Override
-  public Object get(Object key)
+
+  public String get(String key)
   {
     String realKey = keyMap.get(key);
-    Object value = super.get(realKey != null ? realKey : key);
+    String value = super.get(realKey != null ? realKey : key);
     if (value == null)
     {
       return base.get(realKey != null ? realKey : key);
@@ -52,18 +51,18 @@ public class DynamicEnvironment extends Environment
     return value;
   }
 
-  @Override
-  public Set<Map.Entry<Object, Object>> entrySet()
+
+  public Set<Map.Entry<String, String>> entrySet()
   {
-    Set<Map.Entry<Object, Object>> entrySet = new HashSet<>(super.entrySet());
+    Set<Map.Entry<String, String>> entrySet = new HashSet<>(super.entrySet());
     entrySet.addAll(base.entrySet());
     return Collections.unmodifiableSet(entrySet);
   }
 
-  @Override
-  public Set<Object> keySet()
+
+  public Set<String> keySet()
   {
-    Set<Object> keySet = new HashSet<>(super.keySet());
+    Set<String> keySet = new HashSet<>(super.keySet());
     keySet.addAll(keyMap.keySet());
     keySet.addAll(base.keySet());
     return Collections.unmodifiableSet(keySet);
