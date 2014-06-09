@@ -22,10 +22,13 @@ public class ConfidentialResumeHandler
     JobseekerConfidentialityProfile profile = jobseekerConfidentialityProfileDao.fetchJobSeekerConfidentialityProfile(jsp.getId());
 
     boolean isChanged = false;
-
-    
-    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory) || isChanged;
-
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.Name) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.PhoneNumber) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.EmailAddress) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.MailingAddress) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.ContactInfo) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.CompanyName) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.WorkExperience) || isChanged;
 
     if (isChanged)
     {
@@ -33,22 +36,15 @@ public class ConfidentialResumeHandler
     }
   }
 
-  public boolean checkConfidentialCategories(ConfidentialPhraseCategoryRepository repository)
-  {
-    boolean isChanged = false;
-    for (ConfidentialPhraseCategory cateory : repository.values())
-
-  }
-
-
-
   public void makeAllContactInfoNonConfidential(User user)
   {
     JobseekerProfile jsp = jobSeekerProfileManager.getJobSeekerProfile(user);
     JobseekerConfidentialityProfile profile = jobseekerConfidentialityProfileDao.fetchJobSeekerConfidentialityProfile(jsp.getId());
     boolean isChanged = false;
-    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory) || isChanged;
-
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.PhoneNumber) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.EmailAddress) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.MailingAddress) || isChanged;
+    isChanged = profile.resetConfidentialFlagsForCategory(ConfidentialPhraseCategory.ContactInfo) || isChanged;
 
     if (isChanged)
     {

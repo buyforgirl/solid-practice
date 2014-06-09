@@ -18,24 +18,25 @@ public class ConfidentialPhraseCategoryRepository
     ConfidentialPhraseCategories.put(aCategory.getId(), aCategory);
   }
 
-  public ConfidentialPhraseCategory getConfidentialPharseCategory(int id)
+  public Map<Integer, ConfidentialPhraseCategory> getConfidentialPharseCategory()
   {
-    return ConfidentialPhraseCategories.get(id);
+    return ConfidentialPhraseCategories;
   }
 
-  public ConfidentialPhraseCategoryRepository getContactConfidentialPharaseCategories()
+  public ConfidentialPhraseCategoryRepository getContactConfidentialPhraseCategoryRepository()
   {
-    ContactConfidentialPharaseCategoryRepository = new ConfidentialPhraseCategoryRepository();
-    originalCategories = this.ConfidentialPhraseCategoryRepositories;
+    ConfidentialPhraseCategoryRepository contactrepository = new ConfidentialPhraseCategoryRepository();
+    Map<Integer, ConfidentialPhraseCategory> originalCategories = this.ConfidentialPhraseCategoryRepositories;
 
-    for (ConfidentialPhraseCategory category : originalCategories.values()){
-      if(category.isContactCategory()){
-        ContactConfidentialPharaseCategoryRepository.addConfidentialPhraseCategory(category)
+    for (ConfidentialPhraseCategory category : originalCategories.values())
+    {
+      if(category.isContactCategory())
+      {
+        contactrepository.addConfidentialPhraseCategory(category)
       }
     }
 
-    return ContactConfidentialPharaseCategoryRepository;
+    return contactrepository;
   }
 
-  
 }

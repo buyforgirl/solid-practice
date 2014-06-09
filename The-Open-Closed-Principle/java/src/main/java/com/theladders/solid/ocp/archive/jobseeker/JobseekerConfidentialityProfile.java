@@ -36,10 +36,8 @@ public class JobseekerConfidentialityProfile
     return isChanged;
   }
 
-  public 
-
   private List<ConfidentialPhrase> getConfidentialPhrases(ConfidentialPhraseCategory category)
   {
-    return confidentialityProfile.get(category.getName());
+    return confidentialityProfile.get(category.name());
   }
 }

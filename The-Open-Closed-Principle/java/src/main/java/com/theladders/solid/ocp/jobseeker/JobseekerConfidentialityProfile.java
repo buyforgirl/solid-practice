@@ -38,6 +38,6 @@ public class JobseekerConfidentialityProfile
 
   private List<ConfidentialPhrase> getConfidentialPhrases(ConfidentialPhraseCategory category)
   {
-    return confidentialityProfile.get(category.name());
+    return confidentialityProfile.get(category.getName());
   }
 }
