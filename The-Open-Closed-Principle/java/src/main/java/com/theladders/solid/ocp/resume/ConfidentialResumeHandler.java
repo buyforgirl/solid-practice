@@ -22,7 +22,7 @@ public class ConfidentialResumeHandler
     JobseekerConfidentialityProfile profile = jobseekerConfidentialityProfileDao.fetchJobSeekerConfidentialityProfile(jsp.getId());
 
     ConfidentialPhraseCategoryRepository categoryrepository = ConfidentialPhraseCategoryRepositoryCreator.createConfidentialPhraseCategoryRepository();
-    boolean isChanged = checkConfidentialCategories (categoryrepository, profile)
+    boolean isChanged = checkConfidentialCategories (categoryrepository, profile);
 
     if (isChanged)
     {
@@ -35,8 +35,8 @@ public class ConfidentialResumeHandler
     JobseekerProfile jsp = jobSeekerProfileManager.getJobSeekerProfile(user);
     JobseekerConfidentialityProfile profile = jobseekerConfidentialityProfileDao.fetchJobSeekerConfidentialityProfile(jsp.getId());
 
-    ConfidentialPhraseCategoryRepository categoryrepository = ConfidentialPhraseCategoryRepositoryCreator.createConfidentialPhraseCategoryRepository().getContactConfidentialPharaseCategory();
-    boolean isChanged = checkConfidentialCategories (categoryrepository, profile)
+    ConfidentialPhraseCategoryRepository categoryrepository = ConfidentialPhraseCategoryRepositoryCreator.createConfidentialPhraseCategoryRepository().getContactConfidentialPhraseCategoryRepository();
+    boolean isChanged = checkConfidentialCategories (categoryrepository, profile);
 
     if (isChanged)
     {

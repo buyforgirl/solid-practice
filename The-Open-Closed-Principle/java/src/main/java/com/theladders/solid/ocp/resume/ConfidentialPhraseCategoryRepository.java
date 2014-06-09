@@ -8,9 +8,9 @@ public class ConfidentialPhraseCategoryRepository
 {
   private final Map<Integer, ConfidentialPhraseCategory> ConfidentialPhraseCategories;
 
-  public ConfidentialPhraseCategory()
+  public ConfidentialPhraseCategoryRepository()
   {
-    this.ConfidentialPhraseCategories = new HashMap<>();
+    this.ConfidentialPhraseCategories = new HashMap<Integer, ConfidentialPhraseCategory>();
   }
 
   public void addConfidentialPhraseCategory(ConfidentialPhraseCategory aCategory)
@@ -18,7 +18,7 @@ public class ConfidentialPhraseCategoryRepository
     ConfidentialPhraseCategories.put(aCategory.getId(), aCategory);
   }
 
-  public Map<Integer, ConfidentialPhraseCategory> getConfidentialPharseCategory()
+  public Map<Integer, ConfidentialPhraseCategory> getConfidentialPhraseCategory()
   {
     return ConfidentialPhraseCategories;
   }
@@ -26,13 +26,13 @@ public class ConfidentialPhraseCategoryRepository
   public ConfidentialPhraseCategoryRepository getContactConfidentialPhraseCategoryRepository()
   {
     ConfidentialPhraseCategoryRepository contactrepository = new ConfidentialPhraseCategoryRepository();
-    Map<Integer, ConfidentialPhraseCategory> originalCategories = this.ConfidentialPhraseCategoryRepositories;
+    Map<Integer, ConfidentialPhraseCategory> originalCategories = this.ConfidentialPhraseCategories;
 
     for (ConfidentialPhraseCategory category : originalCategories.values())
     {
       if(category.isContactCategory())
       {
-        contactrepository.addConfidentialPhraseCategory(category)
+        contactrepository.addConfidentialPhraseCategory(category);
       }
     }
 

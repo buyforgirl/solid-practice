@@ -13,7 +13,7 @@ public class JobseekerConfidentialityProfile
 
   public JobseekerConfidentialityProfile()
   {
-    confidentialityProfile = new HashMap<>();
+    confidentialityProfile = new HashMap<String, List<ConfidentialPhrase>>();
   }
 
   public boolean resetConfidentialFlagsForCategory(ConfidentialPhraseCategory category)
