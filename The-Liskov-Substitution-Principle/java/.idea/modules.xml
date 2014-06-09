@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/The-Open-Closed-Principle.iml" filepath="$PROJECT_DIR$/The-Open-Closed-Principle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solid-lsp.iml" filepath="$PROJECT_DIR$/solid-lsp.iml" />
     </modules>
   </component>
 </project>
