@@ -28,6 +28,7 @@ public class ApplyController
   private final JobApplicationSystem    jobApplicationSystem;
   private final ResumeManager           resumeManager;
   private final MyResumeManager         myResumeManager;
+  private Map<String, Object> requests;
 
   public ApplyController(JobseekerProfileManager jobseekerProfileManager,
                          JobSearchService jobSearchService,
@@ -42,6 +43,40 @@ public class ApplyController
     this.myResumeManager = myResumeManager;
   }
 
+
+
+  private Map<String,Object> extractRequest(HttpRequest request)
+  {
+      Map<String, Object> requests = new Map<String, Object>();
+      Jobseeker jobseeker = request.getSession().getJobseeker();
+      requests.put("jobseeker", jobseeker);
+
+      JobseekerProfile profile = jobseekerProfileManager.getJobSeekerProfile(jobseeker);
+      requests.put("profile", profile);
+
+      String jobIdString = request.getParameter("jobId");
+      int jobId = Integer.parseInt(jobIdString);
+      requests.put("jobId", jobId);
+
+      Job job = jobSearchService.getJob(jobId);
+      requests.put("job", job);
+
+      return requests;
+
+  }
+
+  private boolean validateJob (Job job)
+  {
+      return job == null;
+  }
+
+  private boolean validateJobseeker (Jobseeker jobseeker, JobseekerProfile profile)
+  {
+      return !jobseeker.isPremium() && (profile.getStatus().equals(ProfileStatus.INCOMPLETE) ||
+              profile.getStatus().equals(ProfileStatus.NO_PROFILE) ||
+              profile.getStatus().equals(ProfileStatus.REMOVED));
+  }
+
   public HttpResponse handle(HttpRequest request,
                              HttpResponse response,
                              String origFileName)
@@ -54,7 +89,7 @@ public class ApplyController
 
     Job job = jobSearchService.getJob(jobId);
 
-    if (job == null)
+    if (validateJob(job))
     {
       provideInvalidJobView(response, jobId);
       return response;
@@ -78,9 +113,7 @@ public class ApplyController
     model.put("jobId", job.getJobId());
     model.put("jobTitle", job.getTitle());
 
-    if (!jobseeker.isPremium() && (profile.getStatus().equals(ProfileStatus.INCOMPLETE) ||
-                                   profile.getStatus().equals(ProfileStatus.NO_PROFILE) ||
-                                   profile.getStatus().equals(ProfileStatus.REMOVED)))
+    if (validateJobseeker(jobseeker, profile))
     {
       provideResumeCompletionView(response, model);
       return response;
@@ -146,6 +179,34 @@ public class ApplyController
 
     return resume;
   }
+
+  private Resume saveNewResume(String newResumeFileName, Jobseeker jobseeker)
+  {
+      Resume resume = resumeManager.saveResume(jobseeker, newResumeFileName);
+
+  }
+
+  private void saveResumeAsActive(Jobseeker jobseeker, Resume resume)
+  {
+      myResumeManager.saveAsActive(jobseeker, resume);
+  }
+
+  private Resume retrieveExistingResume(Jobseeker jobseeker)
+  {
+      return myResumeManager.getActiveResume(jobseeker.getId());
+  }
+
+  private boolean validateResumeExisting(HttpRequest request)
+  {
+      return !"existing".equals(request.getParameter("whichResume"));
+  }
+
+  private boolean validateResumeActive(HttpRequest request)
+  {
+      return resume != null && "yes".equals(request.getParameter("makeResumeActive"));
+  }
+
+
 
   private static void provideInvalidJobView(HttpResponse response, int jobId)
   {
