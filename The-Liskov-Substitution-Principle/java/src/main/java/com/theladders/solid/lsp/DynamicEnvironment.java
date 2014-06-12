@@ -1,10 +1,6 @@
 package com.theladders.solid.lsp;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A wrapper that allows some properties to be overriden on a per-request basis.
@@ -12,15 +8,18 @@ import java.util.Set;
  * @author Zhi-Da Zhong &lt;zz@theladders.com&gt;
  */
 
-public class DynamicEnvironment extends Environment
+public class DynamicEnvironment //extends Environment
 {
   private final Environment         base;
   private final Map<String, String> keyMap; // map insecure prop names to secure ones
+  private final Map<String, String> dynamicMap;
+
 
   public DynamicEnvironment(Environment base, Map<String, String> propKeyMap)
   {
     this.base = base;
     this.keyMap = propKeyMap;
+    dynamicMap = new HashMap<String, String>();
   }
 
   public Collection<String> values()
@@ -43,7 +42,7 @@ public class DynamicEnvironment extends Environment
   public String get(String key)
   {
     String realKey = keyMap.get(key);
-    String value = super.get(realKey != null ? realKey : key);
+    String value = dynamicMap.get(realKey != null ? realKey : key);
     if (value == null)
     {
       return base.get(realKey != null ? realKey : key);
@@ -54,7 +53,7 @@ public class DynamicEnvironment extends Environment
 
   public Set<Map.Entry<String, String>> entrySet()
   {
-    Set<Map.Entry<String, String>> entrySet = new HashSet<>(super.entrySet());
+    Set<Map.Entry<String, String>> entrySet = new HashSet<>(dynamicMap.entrySet());
     entrySet.addAll(base.entrySet());
     return Collections.unmodifiableSet(entrySet);
   }
@@ -62,7 +61,7 @@ public class DynamicEnvironment extends Environment
 
   public Set<String> keySet()
   {
-    Set<String> keySet = new HashSet<>(super.keySet());
+    Set<String> keySet = new HashSet<>(dynamicMap.keySet());
     keySet.addAll(keyMap.keySet());
     keySet.addAll(base.keySet());
     return Collections.unmodifiableSet(keySet);
