@@ -1,4 +1,6 @@
-package com.theladders.solid.dip;
+package com.theladders.solid.dip.suggestedarticle;
+
+import com.theladders.solid.dip.SuggestedArticle;
 
 /**
  * Created by lliao on 6/10/14.

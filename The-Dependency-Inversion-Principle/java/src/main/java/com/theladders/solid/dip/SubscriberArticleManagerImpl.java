@@ -1,6 +1,9 @@
 package com.theladders.solid.dip;
 
 
+import com.theladders.solid.dip.subscriberarticle.SubcriberArticleHandler;
+import com.theladders.solid.dip.suggestedarticle.SuggestedArticleHandler;
+
 import java.util.List;
 
 public class SubscriberArticleManagerImpl implements SubscriberArticleManager

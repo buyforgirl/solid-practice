@@ -1,4 +1,7 @@
-package com.theladders.solid.dip;
+package com.theladders.solid.dip.subscriberarticle;
+
+import com.theladders.solid.dip.*;
+import com.theladders.solid.dip.subscriberarticle.SubcriberArticleHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,8 +27,8 @@ public class SubscriberArticleHandlerImpl implements SubcriberArticleHandler
         CATEGORY_IMAGE_MAP.put("On the Job", "salary_thumb.jpg");
     }
 
-    private SuggestedArticleDao              suggestedArticleDao;
-    private RepositoryManager                repositoryManager;
+    private SuggestedArticleDao suggestedArticleDao;
+    private RepositoryManager repositoryManager;
 
     public SubscriberArticleHandlerImpl(SuggestedArticleDao suggestedArticleDao,
                                         RepositoryManager repositoryManager)

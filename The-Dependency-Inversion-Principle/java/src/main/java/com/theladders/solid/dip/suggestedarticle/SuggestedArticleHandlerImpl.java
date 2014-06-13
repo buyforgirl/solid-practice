@@ -1,4 +1,8 @@
-package com.theladders.solid.dip;
+package com.theladders.solid.dip.suggestedarticle;
+
+import com.theladders.solid.dip.SuggestedArticle;
+import com.theladders.solid.dip.SuggestedArticleDao;
+import com.theladders.solid.dip.suggestedarticle.SuggestedArticleHandler;
 
 import java.util.Date;
 
@@ -7,7 +11,7 @@ import java.util.Date;
  */
 public class SuggestedArticleHandlerImpl implements SuggestedArticleHandler
 {
-    private SuggestedArticleDao              suggestedArticleDao;
+    private SuggestedArticleDao suggestedArticleDao;
 
     public SuggestedArticleHandlerImpl(SuggestedArticleDao suggestedArticleDao)
     {

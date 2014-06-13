@@ -8,7 +8,7 @@ import java.util.*;
  * @author Zhi-Da Zhong &lt;zz@theladders.com&gt;
  */
 
-public class DynamicEnvironment //extends Environment
+public class DynamicEnvironment extends Environment
 {
   private final Environment         base;
   private final Map<String, String> keyMap; // map insecure prop names to secure ones
@@ -48,6 +48,11 @@ public class DynamicEnvironment //extends Environment
       return base.get(realKey != null ? realKey : key);
     }
     return value;
+  }
+
+  public void put(String key, String value)
+  {
+      dynamicMap.put(key, value);
   }
 
 
