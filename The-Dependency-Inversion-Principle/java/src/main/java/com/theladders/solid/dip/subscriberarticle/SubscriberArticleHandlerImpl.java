@@ -1,7 +1,14 @@
 package com.theladders.solid.dip.subscriberarticle;
 
-import com.theladders.solid.dip.*;
-import com.theladders.solid.dip.subscriberarticle.SubcriberArticleHandler;
+import com.theladders.solid.dip.contentnode.ContentNode;
+import com.theladders.solid.dip.contentnode.ContentNodeController;
+import com.theladders.solid.dip.contentnode.ContentUtils;
+import com.theladders.solid.dip.contentnode.RepositoryManager;
+import com.theladders.solid.dip.suggestedarticle.SuggestedArticle;
+import com.theladders.solid.dip.suggestedarticledao.SuggestedArticleDao;
+import com.theladders.solid.dip.suggestedarticleexample.SuggestedArticleExampleFactory;
+import com.theladders.solid.dip.suggestedarticleexample.SuggestedArticleExample;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,34 +19,24 @@ import java.util.HashMap;
  */
 public class SubscriberArticleHandlerImpl implements SubcriberArticleHandler
 {
-    private static final String              IMAGE_PREFIX       = "http://somecdnprovider.com/static/images/careerAdvice/";
-    private static final Map<String, String> CATEGORY_IMAGE_MAP = new HashMap<>();
 
-    static
-    {
-        CATEGORY_IMAGE_MAP.put("Interviewing", "interviewing_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("Job Search", "job_search_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("Networking", "networking_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("Personal Branding", "personalBranding_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("Resume", "resume_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("Salary", "salary_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("Assessment", "salary_thumb.jpg");
-        CATEGORY_IMAGE_MAP.put("On the Job", "salary_thumb.jpg");
-    }
 
     private SuggestedArticleDao suggestedArticleDao;
-    private RepositoryManager repositoryManager;
+    private ContentNodeController contentNodeController;
+    private SuggestedArticleExampleFactory suggestedArticleExampleFactory;
 
     public SubscriberArticleHandlerImpl(SuggestedArticleDao suggestedArticleDao,
-                                        RepositoryManager repositoryManager)
+                                        ContentNodeController contentNodeController,
+                                        SuggestedArticleExampleFactory suggestedArticleExampleFactory)
     {
         this.suggestedArticleDao = suggestedArticleDao;
-        this.repositoryManager = repositoryManager;
+        this.contentNodeController = contentNodeController;
+        this.suggestedArticleExampleFactory = suggestedArticleExampleFactory;
     }
 
     public List<SuggestedArticle> getArticlesbySubscriber(Integer subscriberId)
     {
-        SuggestedArticleExample criteria = new SuggestedArticleExample();
+        SuggestedArticleExample criteria = suggestedArticleExampleFactory.createArticleExample();
         criteria.createCriteria()
                 .andSubscriberIdEqualTo(subscriberId)
                 .andSuggestedArticleStatusIdIn(Arrays.asList(1, 2))  // must be New or Viewed
@@ -49,35 +46,10 @@ public class SubscriberArticleHandlerImpl implements SubcriberArticleHandler
         List<SuggestedArticle> dbSuggestions = this.suggestedArticleDao.selectByExampleWithBlobs(criteria);
 
         // Fetch content associated with SuggestedArticle (based on externalArticleId)
-        resolveArticles(dbSuggestions);
+        contentNodeController.resolveArticles(dbSuggestions);
 
         return dbSuggestions;
     }
 
-    private void resolveArticles(List<SuggestedArticle> dbArticles)
-    {
-        for (SuggestedArticle article : dbArticles)
-        {
 
-            // Attempt to fetch the actual content;
-            ContentNode content = this.repositoryManager.getNodeByUuid(article.getArticleExternalIdentifier());
-            if (content != null && ContentUtils.isPublishedAndEnabled(content))
-            {
-                // Override miniImagePath
-                overrideMiniImagePath(content);
-                article.setContent(content);
-            }
-        }
-    }
-
-    private static void overrideMiniImagePath(ContentNode node)
-    {
-        String path = (String) node.getProperty("miniImagePath");
-
-        if (path == null || path.length() == 0)
-        {
-            String category = (String) node.getProperty("primaryTopic");
-            node.addProperty("miniImagePath", IMAGE_PREFIX + CATEGORY_IMAGE_MAP.get(category));
-        }
-    }
 }

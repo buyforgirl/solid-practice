@@ -1,8 +1,7 @@
 package com.theladders.solid.dip.suggestedarticle;
 
-import com.theladders.solid.dip.SuggestedArticle;
-import com.theladders.solid.dip.SuggestedArticleDao;
-import com.theladders.solid.dip.suggestedarticle.SuggestedArticleHandler;
+
+import com.theladders.solid.dip.suggestedarticledao.SuggestedArticleDao;
 
 import java.util.Date;
 
@@ -12,10 +11,13 @@ import java.util.Date;
 public class SuggestedArticleHandlerImpl implements SuggestedArticleHandler
 {
     private SuggestedArticleDao suggestedArticleDao;
+    private SuggestedArticleFactory suggestedArticleFactory;
 
-    public SuggestedArticleHandlerImpl(SuggestedArticleDao suggestedArticleDao)
+    public SuggestedArticleHandlerImpl(SuggestedArticleDao suggestedArticleDao,
+                                       SuggestedArticleFactory suggestedArticleFactory)
     {
         this.suggestedArticleDao = suggestedArticleDao;
+        this.suggestedArticleFactory = suggestedArticleFactory;
     }
 
     public int addSuggestedArticle(SuggestedArticle suggestedArticle)
@@ -32,7 +34,7 @@ public class SuggestedArticleHandlerImpl implements SuggestedArticleHandler
 
     public void updateNote(Integer id, String note)
     {
-        SuggestedArticle article = new SuggestedArticle();
+        SuggestedArticle article = suggestedArticleFactory.createSuggestedArticle();
         article.setSuggestedArticleId(id);
         article.setNote(note);
         suggestedArticleDao.updateByPrimaryKeySelective(article);
@@ -41,7 +43,7 @@ public class SuggestedArticleHandlerImpl implements SuggestedArticleHandler
     public void markRecomDeleted(Integer id)
     {
         Integer STATUS_DELETED = 4;
-        SuggestedArticle article = new SuggestedArticle();
+        SuggestedArticle article = suggestedArticleFactory.createSuggestedArticle();
         article.setSuggestedArticleId(id);
         article.setSuggestedArticleStatusId(STATUS_DELETED);
         suggestedArticleDao.updateByPrimaryKeySelective(article);

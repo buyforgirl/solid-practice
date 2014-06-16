@@ -2,6 +2,7 @@ package com.theladders.solid.dip;
 
 
 import com.theladders.solid.dip.subscriberarticle.SubcriberArticleHandler;
+import com.theladders.solid.dip.suggestedarticle.SuggestedArticle;
 import com.theladders.solid.dip.suggestedarticle.SuggestedArticleHandler;
 
 import java.util.List;
@@ -18,24 +19,33 @@ public class SubscriberArticleManagerImpl implements SubscriberArticleManager
   //  this.subcriberArticleHandler = subcriberArticleHandler;
   //}
 
-  public List<SuggestedArticle> getArticlesbySubscriber(Integer subscriberId, SubcriberArticleHandler articleHandler)
-  {
-    return articleHandler.getArticlesbySubscriber(subscriberId);
+  private SubcriberArticleHandler subcriberArticleHandler;
+  private SuggestedArticleHandler suggestedArticleHandler;
+
+  public SubscriberArticleManagerImpl(SubcriberArticleHandler subcriberArticleHandler,
+                                      SuggestedArticleHandler suggestedArticleHandler){
+      this.subcriberArticleHandler = subcriberArticleHandler;
+      this.suggestedArticleHandler = suggestedArticleHandler;
   }
 
-  public int addSuggestedArticle(SuggestedArticle suggestedArticle, SuggestedArticleHandler articleHandler)
+  public List<SuggestedArticle> getArticlesbySubscriber(Integer subscriberId)
   {
-    return articleHandler.addSuggestedArticle(suggestedArticle);
+    return subcriberArticleHandler.getArticlesbySubscriber(subscriberId);
+  }
+
+  public int addSuggestedArticle(SuggestedArticle suggestedArticle)
+  {
+    return suggestedArticleHandler.addSuggestedArticle(suggestedArticle);
   }
 
 
-  public void updateNote(Integer id, String note, SuggestedArticleHandler articleHandler)
+  public void updateNote(Integer id, String note)
   {
-    articleHandler.updateNote(id, note);
+      suggestedArticleHandler.updateNote(id, note);
   }
 
-  public void markRecomDeleted(Integer id, SuggestedArticleHandler articleHandler)
+  public void markRecomDeleted(Integer id)
   {
-    articleHandler.markRecomDeleted(id);
+      suggestedArticleHandler.markRecomDeleted(id);
   }
 }

@@ -5,7 +5,7 @@ package com.theladders.solid.dip.suggestedarticleexample;
  */
 public interface SuggestedArticleExample
 {
-    public Criteria createCriteria();
+    public GeneralCriteria createCriteria();
 
     public void setOrderByClause(String orderByClause);
 

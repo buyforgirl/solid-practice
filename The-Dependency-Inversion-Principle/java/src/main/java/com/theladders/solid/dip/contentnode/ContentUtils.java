@@ -1,4 +1,6 @@
-package com.theladders.solid.dip;
+package com.theladders.solid.dip.contentnode;
+
+import com.theladders.solid.dip.contentnode.ContentNode;
 
 public class ContentUtils
 {

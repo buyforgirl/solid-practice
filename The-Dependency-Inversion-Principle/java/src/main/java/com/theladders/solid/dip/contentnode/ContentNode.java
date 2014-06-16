@@ -1,4 +1,4 @@
-package com.theladders.solid.dip;
+package com.theladders.solid.dip.contentnode;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,8 @@
 package com.theladders.solid.dip.subscriberarticle;
 
-import com.theladders.solid.dip.SuggestedArticle;
+
+
+import com.theladders.solid.dip.suggestedarticle.SuggestedArticle;
 
 import java.util.List;
 
